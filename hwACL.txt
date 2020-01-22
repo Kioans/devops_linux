@@ -1,0 +1,81 @@
+Создадим структуру каталогов для проектов.
+Все прокты будут хранится у основного пользователя kioans
+sudo mkdir ~kioans/Projects
+sudo mkdir ~kioans/Projects/Proj1
+sudo mkdir ~kioans/Projects/Proj2
+sudo mkdir ~kioans/Projects/Proj3
+
+Создадим разработчиков
+sudo useradd R1 -c "dev1"
+sudo passwd R1  
+sudo useradd R2 -c "dev2"
+sudo passwd R2
+sudo useradd R3 -c "dev3"
+sudo passwd R3
+sudo useradd R4 -c "dev4"
+sudo passwd R4
+sudo useradd R5 -c "dev5"
+sudo passwd R5
+
+Создадим информационных менеджеров
+sudo useradd I1 -c "manager1"
+sudo passwd I1  
+sudo useradd I2 -c "manager2"
+sudo passwd I2
+sudo useradd I3 -c "manager3"
+sudo passwd I3
+
+Создадим аналитиков
+sudo useradd A1 -c "analyst1"
+sudo passwd A1
+sudo useradd A2 -c "analyst2"
+sudo passwd A2
+sudo useradd A3 -c "analyst3"
+sudo passwd A3
+sudo useradd A4 -c "analyst4"
+sudo passwd A4
+
+Cоздаём группы
+sudo groupadd Proj1
+sudo groupadd Proj2
+sudo groupadd Proj3
+
+Меняем группы у деррикторий проектов
+sudo chown root:Proj1 ~kioans/Projects/Proj1/
+sudo chown root:Proj2 ~kioans/Projects/Proj2/
+sudo chown root:Proj3 ~kioans/Projects/Proj3/ 
+
+$ls -l
+права доступа|владелец|группа|размер|дата создания|имя
+drwxrwsr-x 2 root Proj1 4096 Jan 21 01:08 Proj1
+drwxrwsr-x 2 root Proj2 4096 Jan 21 01:08 Proj2
+drwxrwsr-x 2 root Proj3 4096 Jan 21 01:08 Proj3
+
+Добавляем пользователей в группы 
+sudo usermod -aG Proj1 R2
+sudo usermod -aG Proj1 R3
+sudo usermod -aG Proj1 R5
+sudo usermod -aG Proj1 A1
+
+sudo usermod -aG Proj2 R1
+sudo usermod -aG Proj2 R5
+sudo usermod -aG Proj2 A1
+
+sudo usermod -aG Proj3 R1
+sudo usermod -aG Proj3 R2
+sudo usermod -aG Proj3 R4
+sudo usermod -aG Proj3 A2
+
+Задаём списки контроля доступа
+Если ACL не включен, редактирум файл /etc/fstab
+sudo setfacl -m u:A4:r ~kioans/Projects/Proj1/
+sudo setfacl -m u:A2:r ~kioans/Projects/Proj2/
+sudo setfacl -m u:A3:r ~kioans/Projects/Proj2/
+sudo setfacl -m u:A1:r ~kioans/Projects/Proj3/
+sudo setfacl -m u:A4:r ~kioans/Projects/Proj3/
+
+
+
+
+
+
