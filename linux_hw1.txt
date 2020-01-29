@@ -1,0 +1,63 @@
+
+создадим структуру каталогов
+kioans@skioans:$ cd /var
+kioans@skioans:/var$ mkdir ftp
+kioans@skioans:/var/ftp$ mkdir User1dir
+kioans@skioans:/var/ftp$ mkdir User2dir
+kioans@skioans:/var/ftp$ mkdir UserD1dir
+kioans@skioans:/var/ftp$ mkdir UserD2dir
+kioans@skioans:/var/ftp$ mkdir ManagersDir
+kioans@skioans:/var/ftp$ mkdir DevelopersDir
+
+создаём пользователей  и задаём им пароли 
+
+kioans@skioans:/var$ sudo useradd simpleUser1 -c "manager"
+sudo passwd simpleUser1
+kioans@skioans:/var$ sudo useradd simpleUser2 -c "manager"
+sudo passwd simpleUser2
+kioans@skioans:/var$ sudo useradd simpleUserD1 -c "developer"
+sudo passwd simpleUserD1
+kioans@skioans:/var$ sudo useradd simpleUserD2 -c "developer"
+sudo passwd simpleUserD2
+
+создадим группы и добавим пользователей в группы
+sudo groupadd GroupManager
+sudo groupadd GroupDeveloper
+sudo usermod -aG GroupManager simpleUser1 
+sudo usermod -aG GroupManager simpleUser2 
+sudo usermod -aG GroupDeveloper simpleUserD1
+sudo usermod -aG GroupDeveloper simpleUserD2
+
+назначим владельцев для директорий
+sudo chown simpleUser1:root /var/ftp/User1dir
+sudo chown simpleUser2:root /var/ftp/User2dir
+sudo chown simpleUserD1:root /var/ftp/UserD1dir
+sudo chown simpleUserD2:root /var/ftp/UserD2dir
+sudo chown root:GroupManager /var/ftp/ManagersDir
+sudo chown root:GroupDeveloper /var/ftp/DevelopersDir
+
+устанавливаем права на директории		
+sudo chmod 770 User1dir
+sudo chmod 770 User2dir
+sudo chmod 770 UserD1dir
+sudo chmod 770 UserD2dir
+sudo chmod 3770 ManagersDir
+sudo chmod 3770 DevelopersDir
+
+маску эффективны прав на директории
+опция <-d> - Устанавливает ACL по умолчанию на объект.
+sudo setfacl -d -m u::rwx,g::-,o::- User1dir
+sudo setfacl -d -m u::rwx,g::-,o::- User2dir
+sudo setfacl -d -m u::rwx,g::-,o::- UserD1dir
+sudo setfacl -d -m u::rwx,g::-,o::- UserD2dir
+sudo setfacl -d -m u::rwx,g::rwx,o::- ManagersDir
+sudo setfacl -d -m u::rwx,g::rwx,o::- DevelopersDir
+
+теперь при создании файла или директории соответствующим пользователем
+в своей директории права на чтение, запись и исполнение будет иметь только он
+при создании пользователем simpleUser1 директории или файла в ManagersDir
+он будет владельцем файла и иметь полный доступ к нему, так же к этому созданному 
+объеку будут иметь доступ члены группы GroupManagers
+
+
+
